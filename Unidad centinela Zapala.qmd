@@ -63,7 +63,7 @@ La vigilancia epidemiológica integrada de infecciones respiratorias agudas (IRA
 #| echo: false
 library(knitr)
 
-img <- knitr::include_graphics("Unidad centinela/Logos.Imagenes/estrategias de vigilancia.png")
+img <- knitr::include_graphics("C:/Users/Salud/Documents/ZONA II/Boletin ZSII/Unidad-Centinela/Logos.Imagenes/estrategias de vigilancia.png")
 
 img
 
@@ -142,7 +142,7 @@ hc_add_series(name = "VSR", data = DATOS_se$VSR)%>%
   
 ```
 
-```{}
+```         
 ```
 
 Gráfico 2. N° de determinanciones positivas para COVID, Influenza y OVR en ambulatorios(No UMAs) notificados en la Región del Pehuén, según edad. SE `r SE_MIN` a `r SE_MAX`. Año 2024.N= `r N_testeos_positivos`
@@ -337,7 +337,7 @@ hc_add_series(name ="Rinovirus", data = DATOS_SE_INTERNADOS$`Rinovirus`)%>%
 
 ```
 
-```{}
+```         
 ```
 
 Gráfico 6. N° de determinanciones positivas para Internado y/o fallecido por COVID o IRA notificados en la Región del Pehuén, según edad y determinación. SE `r SE_MIN_INTERNADOS` a `r SE_MAX_INTERNADOS`. Año 2024.N= `r N_testeos_positivos_internados`

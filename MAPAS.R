@@ -31,7 +31,8 @@ st_crs(departamentos)
 
 #leo mi dataset con casos positivos por departamento
 
-CONTEO_AMBULATORIOS_localidad_mapa <- read.csv("C:/Users/Salud/Documents/ZONA II/Boletin ZSII/Unidad centinela/CONTEO_AMBULATORIOS_localidad.csv")
+CONTEO_AMBULATORIOS_localidad_mapa <- read.csv("C:/Users/Salud/Documents/ZONA II/Boletin ZSII/Unidad-Centinela/CONTEO_AMBULATORIOS_localidad.csv")
+
 
 
 tabla1 <- CONTEO_AMBULATORIOS_localidad_mapa %>% mutate(
@@ -64,7 +65,7 @@ casos_ambulatorios_mapa <- casos_ambulatorios_mapa %>%
                               include.lowest = T))
 
 table(casos_ambulatorios_mapa$n_categoria)
-CONTEO_AMBULATORIOS_localidad_mapa <- read.csv("C:/Users/Salud/Documents/ZONA II/Boletin ZSII/Unidad centinela/CONTEO_AMBULATORIOS_localidad.csv")
+CONTEO_AMBULATORIOS_localidad_mapa <- read.csv("C:/Users/Salud/Documents/ZONA II/Boletin ZSII/Unidad-Centinela/CONTEO_AMBULATORIOS_localidad.csv")
 
 
 tabla1 <- CONTEO_AMBULATORIOS_localidad_mapa %>% mutate(
@@ -102,7 +103,7 @@ table(casos_ambulatorios_mapa$n_categoria)
 #####INTERNADOS####
 #leo mi dataset con casos positivos por departamento
 
-CONTEO_INTERNADOS_localidad_mapa <- read.csv("C:/Users/Salud/Documents/ZONA II/Boletin ZSII/Unidad centinela/CONTEO_INTERNADOS_localidad.csv")
+CONTEO_INTERNADOS_localidad_mapa <- read.csv("C:/Users/Salud/Documents/ZONA II/Boletin ZSII/Unidad-Centinela/CONTEO_INTERNADOS_localidad.csv")
 
 
 tabla2 <- CONTEO_INTERNADOS_localidad_mapa %>% mutate(

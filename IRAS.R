@@ -21,7 +21,7 @@ library(flextable)
 library(stringr)                  
 library(quarto)
 
-#####Proceso mi base#####
+#####Proceso mi base csv#####
 VR_NOMINAL <- read.csv2("VR_NOMINAL.csv",encoding = "UTF-8", na.strings = c("","*SIN DATO* (*SIN DATO*)"))
 
 ##Trabajo sobre las variables y su formato##
