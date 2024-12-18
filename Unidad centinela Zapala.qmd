@@ -1,0 +1,806 @@
+---
+title: "Virus respiratorios Región sanitaria del Pehuen"
+author: "Area de Epidemiología"
+format: 
+  html:
+    embed-resources: true # esto no debe modificarse nunca
+    published-title: "Fecha:"  # Cambia "Published" por "Fecha"
+    author-title: 
+    toc: true                # Habilita la tabla de contenidos
+    toc-title: "Índice de Contenidos"  # Título del índice
+    toc-depth: 3             # Nivel de profundidad del índice (hasta h3)
+    toc-location: left       # Ubicación del índice (izquierda)
+editor: visual
+execute:
+  warning: false
+  message: false
+footnotes-hover: true # muestra notas al pie
+smooth-scroll: true # suaviza el scroll
+code-copy: true            # Permite copiar el código desde el documento
+theme: flatly
+include-in-header: header4.html
+css: CSS/style.css
+resources: 
+  - boletin.pdf
+editor_options: 
+  chunk_output_type: inline
+---
+
+## Introducción
+
+```{r}
+#| echo: false
+source("IRAS.R")
+```
+
+El siguiente material de difusión para los equipos de salud tiene por objetivo compartir información sanitaria sobre los Eventos de notificación obligatoria registrados en el Sistema Nacional de Vigilancia en Salud(SNVS) desde la SE `r SE_MIN` a `r SE_MAX` del 2024 y de esta manera retroalimentar a los equipos de trabajo que forman parte de la Región del Pehuén. Se profundiza en 2 estrategias de vigilancia implementadas en la región para infecciones respiratorias agudas:
+
+• Infecciones respiratorias agudas: Ambulatorios e internados
+
+## Metodología
+
+Para el análisis de la información se trabajó con bases exportadas del SNVS, correspondientes a la notificación individualizada.
+
+## Infecciones respiratorias agudas
+
+La vigilancia epidemiológica integrada de infecciones respiratorias agudas (IRA), permite caracterizar la situación epidemiológica, generar información de calidad para orientar la toma de decisiones e implementar medidas de prevención y control oportunas.
+
+#### Objetivos de la vigilancia
+
+• Monitorear tendencias de la incidencia de las IRA y detectar eventos respiratorios inusuales.
+
+• Estimar la participación de agentes etiológicos virales seleccionados en la morbilidad y mortalidad por IRA.
+
+• Registrar y analizar los factores de riesgo o determinantes asociados a los casos graves, inusitados y fatales.
+
+• Identificar y caracterizar los virus respiratorios circulantes.
+
+• Caracterizar los virus Influenza que potencialmente puedan ser considerados para la composición de vacunas.
+
+• Estimar la carga de enfermedad grave por infecciones respiratorias agudas, particularmente asociadas a Influenza, SARS-CoV-2 y VSR.
+
+```{r imagen}
+#| echo: false
+library(knitr)
+
+img <- knitr::include_graphics("Unidad centinela/Logos.Imagenes/estrategias de vigilancia.png")
+
+img
+
+```
+
+## Infecciones respiratorias agudas: Vigilancia universal (ambulatorios)
+
+Tabla 1. Número de testeos realizados en laRegión del Pehuén para virus respiratorios en ambulatorios (no UMA) . SE `r SE_MIN` a `r SE_MAX`. Año 2024.N= `r N_testeos`
+
+```{r tabla 1}
+#| echo: false
+library(flextable)
+library(officer)
+# Configura las opciones predeterminadas
+set_flextable_defaults(
+font.size = 10,
+padding = 6
+)
+# Crear la tabla con los datos y aplicar estilos
+tabla_estilizada <- flextable(head(tabla_ambulatorios_universal)) %>%
+# Aplicar un color de fondo al encabezado
+bg(part = "header", bg = "#2b908f") %>%
+# Ajustar el ancho de la primera columna
+width(j = 1, width = 2) %>% # Cambia el ancho a 2 pulgadas
+# Agregar bordes para el encabezado y el cuerpo de la tabla
+border(part = "all", border = fp_border(color = "#fde0dd", width = 1)) %>%
+# Aplicar el tema vanilla
+theme_vanilla()
+# Mostrar la tabla
+tabla_estilizada
+```
+
+Gráfico 1. Distribución temporal de casos de COVID, Influenza y OVR en ambulatorios(No UMAs) notificados en la Región del Pehuén, según determinación. SE `r SE_MIN` a `r SE_MAX`. Año 2024.N= `r N_testeos_positivos`
+
+library(highcharter)
+
+```{r Gráfico 1}
+#| echo: false
+library(highcharter)
+
+# Crear el gráfico de barras
+# Define una paleta de colores personalizada
+colores <- c(
+  "Influenza A" = "#7cb5ec",
+  "Influenza B" = "#434348",
+  "Sars-Cov-2" = "#90ed7d",
+  "VSR" = "#f7a35c",
+  "Parainfluenza" = "#8085e9",
+  "Adenovirus" = "#f15c80",
+  "Metaneumovirus" = "#e4d354",
+  "Enterovirus" = "#2b908f",
+  "Bocavirus" = "#f45b5b",
+  "Rinovirus" = "#91e8e1"
+)
+
+DATOS_se <- CASOS_AMBULATORIOS_SE_POSITIVOS %>%
+pivot_wider(names_from = `DETERMINACION`, values_from = n)
+
+highchart() %>%
+hc_chart(type = "column") %>%
+hc_colors(unname(colores))%>%
+hc_xAxis(categories = DATOS_se$SEPI_CREADA, title = list(text = "SE")) %>%
+hc_yAxis(title = list(text = "Casos")) %>%
+hc_plotOptions(column = list(stacking = "normal")) %>%
+hc_add_series(name = "Influenza A", data = DATOS_se$`Influenza A`)%>%
+hc_add_series            (name = "Influenza B", data = DATOS_se$`Influenza B`) %>%
+hc_add_series(name = "Sars-Cov-2", data = DATOS_se$`Sars-Cov-2`) %>%
+hc_add_series(name = "VSR", data = DATOS_se$VSR)%>%
+  hc_add_series(
+    name = "Total Testeos",
+    data = CONTEO_AMBULATORIOS_SE_TOTAL$n,
+    color = "#d01c8b",
+    type = "line",
+    yAxis = 0,
+    marker = list(enabled = FALSE))# Agregar la serie de testeos totales como línea
+  
+```
+
+```{}
+```
+
+Gráfico 2. N° de determinanciones positivas para COVID, Influenza y OVR en ambulatorios(No UMAs) notificados en la Región del Pehuén, según edad. SE `r SE_MIN` a `r SE_MAX`. Año 2024.N= `r N_testeos_positivos`
+
+```{r Gráfico 2}
+#| echo: false
+# Cargar las librerías necesarias
+library(highcharter)
+library(dplyr)
+# Preparar los datos para el gráfico
+DATOS_EDAD <- CONTEO_AMBULATORIOS_edad %>%
+pivot_wider(names_from = `DETERMINACION`, values_from = n)
+# Crear gráfico de barras apiladas con highcharter
+highchart() %>%
+hc_chart(type = "column") %>%
+hc_colors(unname(colores))%>%
+hc_xAxis(categories = DATOS_EDAD$GRUPO_EDAD2, title = list(text = "Rango etario")) %>%
+hc_yAxis(title = list(text = "Determinación")) %>%
+hc_plotOptions(column = list(stacking = "normal")) %>%
+hc_add_series(name = "Influenza A", data = DATOS_EDAD$`Influenza A`)%>%
+hc_add_series            (name = "Influenza B", data = DATOS_EDAD$`Influenza B`) %>%
+hc_add_series(name = "Sars-Cov-2", data = DATOS_EDAD$`Sars-Cov-2`) %>%
+hc_add_series(name = "VSR", data = DATOS_EDAD$VSR)%>%
+hc_legend(
+    layout = "horizontal",  # Alineación horizontal
+    align = "center",       # Centrar la leyenda
+    verticalAlign = "bottom",  # Colocarla en la parte inferior
+    floating = TRUE,        # Hacerla flotante
+    itemDistance = 10,      # Distancia entre los ítems de la leyenda
+    y = 15                  # Ajustar la posición vertical (mover hacia abajo)
+  ) %>%
+  hc_chart(
+    marginBottom = 100      # Aumentar el margen inferior para evitar superposición
+  )
+
+```
+
+Mapa 1. N° de determinanciones positivas para COVID, Influenza y OVR en ambulatorios(No UMAs) notificados en la Región del Pehuén, según localidad.SE `r SE_MIN` a `r SE_MAX`. Año 2024.N= `r N_testeos_positivos`
+
+```{r Mapa 1}
+#| echo: false
+
+library(ggplot2)
+library(ggiraph)
+library(ggspatial)
+# Crear el mapa con categorías en base a quintiles
+source("MAPAS.R")
+
+
+
+mapa_interactivo <- ggplot(casos_ambulatorios_mapa) +
+  geom_sf_interactive(aes(fill = n, tooltip = paste("Departamento:", nombre, "<br>Casos:", n)), 
+                      color = "white", size = 0.2) +
+  scale_fill_gradientn(
+    colors = colores,  # Usar la paleta definida
+    trans = "sqrt", 
+    na.value = "gray90"  # Color para valores NA
+  ) +
+  labs(
+    fill = "Casos positivos"
+  ) +
+  theme_minimal() +
+  annotation_scale(location = "bl", width_hint = 0.2) +  # Escala en la esquina inferior izquierda
+  annotation_north_arrow(location = "br", which_north = "true",  # Rosa de los vientos en la esquina inferior derecha
+                         style = north_arrow_fancy_orienteering())
+
+# Mostrar el mapa interactivo
+girafe(ggobj = mapa_interactivo)
+
+```
+
+Gráfico 3. Distribución de los síntomas presentes en los casos positivos para COVID, Influenza y OVR en ambulatorios(No UMAs) notificados en la Región del Pehuén .SE `r SE_MIN` a `r SE_MAX`. Año 2024.N= `r N_testeos_positivos`
+
+```{r Grafico 3 Sintomas}
+#| echo: false
+CONTEO_AMBULATORIOS_sintomas<-CONTEO_AMBULATORIOS_sintomas %>%
+  filter(n > 0)
+
+ggplot(CONTEO_AMBULATORIOS_sintomas, aes(x = n, y = reorder(Sintoma, n))) +
+geom_bar(stat = "identity", fill = "#2b908f" )+
+ labs(
+   x = "Numero de casos",
+  y = "Sintomas"
+   ) +
+theme_minimal() +
+  theme(
+panel.background = element_rect(fill = "white", color = NA),
+panel.grid.major = element_blank(),
+panel.grid.minor = element_blank(),
+axis.title.x = element_text(size = 18),              # Tamaño del título del eje X
+axis.title.y = element_text(size = 18),              # Tamaño del título del eje Y
+axis.text.x = element_text(size = 17),               # Tamaño de los valores del eje X
+axis.text.y = element_text(size = 18),               # Tamaño de los valores del eje Y
+legend.title = element_text(size = 18),              # Tamaño del título de la leyenda
+legend.text = element_text(size = 18)) + # Ajusta el tamaño de las etiquetas si es necesario) 
+  scale_y_discrete(labels = function(x) gsub("SINTOMA_", "", x)) # Remueve el prefijo "SINTOMA_"
+
+
+```
+
+Gráfico 4. Distribución de las comorbilidades presentes en los casos positivos para COVID, Influenza y OVR en ambulatorios(No UMAs) notificados en la Región del Pehuén .SE `r SE_MIN` a `r SE_MAX`. Año 2024.N= `r N_testeos_positivos`
+
+```{r GraFico 4 Comorbilidades}
+#| echo: false
+
+CONTEO_AMBULATORIOS_comorbilidades<-CONTEO_AMBULATORIOS_comorbilidades%>%filter(n > 0)
+
+ggplot(CONTEO_AMBULATORIOS_comorbilidades, aes(x = n, y = reorder(Comorbilidades, n))) +
+geom_bar(stat = "identity", fill = "#2b908f") +
+ labs(
+   x = "Numero de casos",
+  y = "Sintomas"
+   ) +
+theme_minimal() +
+  theme(
+panel.background = element_rect(fill = "white", color = NA),
+panel.grid.major = element_blank(),
+panel.grid.minor = element_blank(),
+axis.title.x = element_text(size = 18),              # Tamaño del título del eje X
+axis.title.y = element_text(size = 18),              # Tamaño del título del eje Y
+axis.text.x = element_text(size = 17),               # Tamaño de los valores del eje X
+axis.text.y = element_text(size = 18),               # Tamaño de los valores del eje Y
+legend.title = element_text(size = 18),              # Tamaño del título de la leyenda
+legend.text = element_text(size = 18)) + # Ajusta el tamaño de las etiquetas si es necesario) 
+  scale_y_discrete(labels = function(x) gsub("COMORB_", "", x)) # Remueve el prefijo "COMORB_"
+```
+
+```         
+```
+
+## Infecciones respiratorias agudas: Vigilancia universal (internados)
+
+Tabla 2. Número de testeos realizados en la Región del Pehuén para virus respiratorios en internados . SE `r SE_MIN_INTERNADOS` a `r SE_MAX_INTERNADOS`. Año 2024.N= `r N_testeos_internados`
+
+```{r prueba}
+#| echo: false
+
+library(flextable)
+library(officer)
+# Configura las opciones predeterminadas
+set_flextable_defaults(
+font.size = 10,
+padding = 6
+)
+# Crear la tabla con los datos y aplicar estilos
+tabla_estilizada <- flextable(head(tabla_internados_universal)) %>%
+# Aplicar un color de fondo al encabezado
+bg(part = "header", bg = "#2b908f") %>%
+# Ajustar el ancho de la primera columna
+width(j = 1, width = 2) %>% # Cambia el ancho a 2 pulgadas
+# Agregar bordes para el encabezado y el cuerpo de la tabla
+border(part = "all", border = fp_border(color = "#fde0dd", width = 1)) %>%
+# Aplicar el tema vanilla
+theme_vanilla()
+# Mostrar la tabla
+tabla_estilizada
+```
+
+Gráfico 5. Distribución temporal de casos de Internado y/o fallecido por COVID o IRA notificados en la Región del Pehuén, según determinación. SE `r SE_MIN_INTERNADOS` a `r SE_MAX_INTERNADOS`. Año 2024.N= `r N_testeos_positivos_internados`
+
+```{r GRAFICO 5}
+#| echo: false
+# Preparar los datos para el gráfico
+DATOS_SE_INTERNADOS <- CASOS_INTERNADOS_SE_POSITIVOS %>%
+pivot_wider(names_from = `DETERMINACION`, values_from = n)
+# Crear gráfico de barras apiladas con highcharter
+highchart() %>%
+hc_chart(type = "column") %>%
+hc_colors(unname(colores))%>%
+hc_xAxis(categories = DATOS_SE_INTERNADOS$SEPI_CREADA, title = list(text = "SE")) %>%
+hc_yAxis(title = list(text = "Casos")) %>%
+hc_plotOptions(column = list(stacking = "normal")) %>%
+hc_add_series(name = "Influenza A", data = DATOS_SE_INTERNADOS$`Influenza A`)%>%
+hc_add_series            (name = "Influenza B", data = DATOS_SE_INTERNADOS$`Influenza B`) %>%
+hc_add_series(name = "Sars-Cov-2", data = DATOS_SE_INTERNADOS$`Sars-Cov-2`) %>%
+hc_add_series(name = "VSR", data = DATOS_SE_INTERNADOS$VSR)%>%
+hc_add_series(name ="Parainfluenza", data = DATOS_SE_INTERNADOS$`Parainfluenza`)%>%
+hc_add_series(name ="Adenovirus", data = DATOS_SE_INTERNADOS$`Adenovirus`)%>%
+hc_add_series(name ="Metaneumovirus", data = DATOS_SE_INTERNADOS$`Metaneumovirus`)%>%  
+hc_add_series(name ="Enterovirus", data = DATOS_SE_INTERNADOS$`Enterovirus`)%>%
+hc_add_series(name ="Bocavirus", data = DATOS_SE_INTERNADOS$`Bocavirus`)%>%
+hc_add_series(name ="Rinovirus", data = DATOS_SE_INTERNADOS$`Rinovirus`)%>%
+   hc_add_series(
+    name = "Total Testeos",
+    data = CONTEO_INTERNADOS_SE_TOTAL$n,
+    color = "#d01c8b",
+    type = "line",
+    yAxis = 0,
+    marker = list(enabled = FALSE))# Agregar la serie de testeos totales como línea
+  
+ 
+
+```
+
+```{}
+```
+
+Gráfico 6. N° de determinanciones positivas para Internado y/o fallecido por COVID o IRA notificados en la Región del Pehuén, según edad y determinación. SE `r SE_MIN_INTERNADOS` a `r SE_MAX_INTERNADOS`. Año 2024.N= `r N_testeos_positivos_internados`
+
+```{r GRAFICO 6}
+#| echo: false
+# Cargar las librerías necesarias
+  library(highcharter)
+ library(dplyr)
+# Preparar los datos para el gráfico
+DATOS_EDAD_INTERNADOS <- CONTEO_INTERNADOS_edad %>%
+pivot_wider(names_from = `DETERMINACION`, values_from = n)
+# Crear gráfico de barras apiladas con highcharter
+highchart() %>%
+hc_chart(type = "column") %>%
+hc_colors(unname(colores))%>%
+hc_xAxis(categories = DATOS_EDAD_INTERNADOS$GRUPO_EDAD2, title = list(text = "Rango etario")) %>%
+hc_yAxis(title = list(text = "Determinación")) %>%
+hc_plotOptions(column = list(stacking = "normal")) %>%
+hc_add_series(name = "Influenza A", data = DATOS_EDAD_INTERNADOS$`Influenza A`)%>%
+hc_add_series            (name = "Influenza B", data = DATOS_EDAD_INTERNADOS$`Influenza B`) %>%
+hc_add_series(name = "Sars-Cov-2", data = DATOS_EDAD_INTERNADOS$`Sars-Cov-2`) %>%
+hc_add_series(name = "VSR", data = DATOS_EDAD_INTERNADOS$VSR)%>%
+hc_add_series(name ="Parainfluenza", data = DATOS_EDAD_INTERNADOS$`Parainfluenza`)%>%
+hc_add_series(name ="Adenovirus", data = DATOS_EDAD_INTERNADOS$`Adenovirus`)%>%
+hc_add_series(name ="Metaneumovirus", data = DATOS_EDAD_INTERNADOS$`Metaneumovirus`)%>%  
+hc_add_series(name ="Enterovirus", data = DATOS_EDAD_INTERNADOS$`Enterovirus`)%>%
+hc_add_series(name ="Bocavirus", data = DATOS_EDAD_INTERNADOS$`Bocavirus`)%>%
+hc_add_series(name ="Rinovirus", data = DATOS_EDAD_INTERNADOS$`Rinovirus`)
+  
+
+```
+
+Mapa 2. N° de determinanciones positivas para Internado y/o fallecido notificados en la Región del Pehuén, según departamento SE `r SE_MIN_INTERNADOS` a `r SE_MAX_INTERNADOS`. Año 2024.N= `r N_testeos_positivos_internados`
+
+```{r mapa 2}
+#| echo: false
+
+
+# Crear el mapa interactivo con escala y rosa de los vientos
+mapa_interactivo <- ggplot(casos_internados_mapa) +
+  geom_sf_interactive(aes(fill = n, tooltip = paste("Departamento:", nombre, "<br>Casos:", n)), 
+                      color = "white", size = 0.2) +
+   scale_fill_gradientn(
+    colors = colores,  # Usar la paleta definida
+    trans = "sqrt", 
+    na.value = "gray90"  # Color para valores NA
+  ) +
+  labs(
+    fill = "Casos positivos"
+  ) +
+  theme_minimal() +
+  annotation_scale(location = "bl", width_hint = 0.2) +  # Escala en la esquina inferior izquierda
+  annotation_north_arrow(location = "br", which_north = "true",  # Rosa de los vientos en la esquina inferior derecha
+                          style = north_arrow_fancy_orienteering())
+
+# Mostrar el mapa interactivo
+ girafe(ggobj = mapa_interactivo)
+
+```
+
+```         
+```
+
+Gráfico 7. Distribución de los síntomas presentes en los casos positivos para el evento Internado y/o fallecido notificados en la Región del Pehuén, según departamento SE `r SE_MIN_INTERNADOS` a `r SE_MAX_INTERNADOS`. Año 2024.N= `r N_testeos_positivos_internados`
+
+```{r GarfiCo 7}
+#| echo: false
+
+ CONTEO_INTERNADOS_sintomas<-CONTEO_INTERNADOS_sintomas%>%filter(n>0)
+
+ggplot(CONTEO_INTERNADOS_sintomas, aes(x = n, y = reorder(Sintoma, n))) +
+geom_bar(stat = "identity", fill = "#2b908f") +
+ labs(
+   x = "Numero de casos",
+  y = "Sintomas"
+   ) +
+theme_minimal() +
+  theme(
+panel.background = element_rect(fill = "white", color = NA),
+panel.grid.major = element_blank(),
+panel.grid.minor = element_blank(),
+axis.title.x = element_text(size = 18),              # Tamaño del título del eje X
+axis.title.y = element_text(size = 18),              # Tamaño del título del eje Y
+axis.text.x = element_text(size = 17),               # Tamaño de los valores del eje X
+axis.text.y = element_text(size = 18),               # Tamaño de los valores del eje Y
+legend.title = element_text(size = 18),              # Tamaño del título de la leyenda
+legend.text = element_text(size = 18))+ # Ajusta el tamaño de las etiquetas si es necesario) 
+  scale_y_discrete(labels = function(x) gsub("SINTOMA_", "", x)) # Remueve el prefijo "SINTOMA_"
+
+
+```
+
+Gráfico 8. Distribución de las comorbilidades presentes en los casos positivos para el evento Internado y/o fallecido notificados en la Región del Pehuén, según departamento SE `r SE_MIN_INTERNADOS` a `r SE_MAX_INTERNADOS`. Año 2024.N= `r N_testeos_positivos_internados`
+
+```{r GraFico 8 Comorbilidades}
+#| echo: false
+
+ CONTEO_INTERNADOS_comorbilidades<-CONTEO_INTERNADOS_comorbilidades%>%filter(n>0)
+ggplot(CONTEO_INTERNADOS_comorbilidades, aes(x = n, y = reorder(Comorbilidades, n))) +
+geom_bar(stat = "identity", fill = "#2b908f") +
+ labs(
+   x = "Numero de casos",
+  y = "Sintomas"
+   ) +
+theme_minimal() +
+  theme(
+panel.background = element_rect(fill = "white", color = NA),
+panel.grid.major = element_blank(),
+panel.grid.minor = element_blank(),
+axis.title.x = element_text(size = 18),              # Tamaño del título del eje X
+axis.title.y = element_text(size = 18),              # Tamaño del título del eje Y
+axis.text.x = element_text(size = 17),               # Tamaño de los valores del eje X
+axis.text.y = element_text(size = 18),               # Tamaño de los valores del eje Y
+legend.title = element_text(size = 18),              # Tamaño del título de la leyenda
+legend.text = element_text(size = 18)) + # Ajusta el tamaño de las etiquetas si es necesario) 
+  scale_y_discrete(labels = function(x) gsub("COMORB_", "", x)) # Remueve el prefijo "COMORB_"
+```
+
+```         
+```
+
+## Infecciones respiratorias agudas: Vigilancia centinela-Unidad de monitoreo ambulatorio (UMA)
+
+Tabla 3. Número de testeos realizados en la Unidad de monitoreo ambulatorio (UMA). SE `r SE_MIN_UMA` a `r SE_MAX_UMA`. Año 2024.N= `r N_testeos_UMA`
+
+```{r tabla 3}
+#| echo: false
+library(flextable)
+library(officer)
+# Configura las opciones predeterminadas
+set_flextable_defaults(
+font.size = 10,
+padding = 6
+)
+# Crear la tabla con los datos y aplicar estilos
+tabla_estilizada <- flextable(head(tabla_UMA)) %>%
+# Aplicar un color de fondo al encabezado
+bg(part = "header", bg = "#2b908f") %>%
+# Ajustar el ancho de la primera columna
+width(j = 1, width = 2) %>% # Cambia el ancho a 2 pulgadas
+# Agregar bordes para el encabezado y el cuerpo de la tabla
+border(part = "all", border = fp_border(color = "#fde0dd", width = 1)) %>%
+# Aplicar el tema vanilla
+theme_vanilla()
+# Mostrar la tabla
+tabla_estilizada
+```
+
+Gráfico 9. Distribución temporal de casos de la Unidad de monitoreo ambulatorio (UMA) notificados en la Región del Pehuén, según determinación. SE `r SE_MIN_UMA` a `r SE_MAX_UMA`. Año 2024.N= `r N_testeos_positivos_UMA`
+
+```{r Gráfico 9}
+#| echo: false
+# Crear el gráfico de barras
+DATOS_UMA <- CASOS_UMA_SE_POSITIVOS %>%
+pivot_wider(names_from = `DETERMINACION`, values_from = n)
+# Crear gráfico de barras apiladas con highcharter
+
+highchart() %>%
+hc_chart(type = "column") %>%
+hc_colors(unname(colores))%>%
+hc_xAxis(categories = DATOS_UMA$SEPI_CREADA, title = list(text = "SE")) %>%
+hc_yAxis(title = list(text = "Casos")) %>%
+hc_plotOptions(column = list(stacking = "normal")) %>%
+hc_add_series(name = "Influenza A", data = DATOS_UMA$`Influenza A`)%>%
+hc_add_series            (name = "Influenza B", data = DATOS_UMA$`Influenza B`) %>%
+hc_add_series(name = "Sars-Cov-2", data = DATOS_UMA$`Sars-Cov-2`) %>%
+hc_add_series(name = "VSR", data = DATOS_UMA$VSR)%>%
+hc_add_series(
+    name = "Total Testeos",
+    data = CONTEO_UMA_SE_TOTAL$n,
+    color = "#d01c8b",
+    type = "line",
+    yAxis = 0,
+    marker = list(enabled = FALSE))# Agregar la serie de testeos totales como línea
+  
+   
+
+```
+
+Gráfico 10. N° de determinanciones positivas para la Unidad de monitoreo ambulatorio (UMA) notificados en la Región del Pehuén, según edad y determinación. SE `r SE_MIN_UMA` a `r SE_MAX_UMA`. Año 2024.N= `r N_testeos_positivos_UMA`
+
+```{r GRAFICO 10}
+#| echo: false
+# Cargar las librerías necesarias
+library(highcharter)
+library(dplyr)
+# Preparar los datos para el gráfico
+DATOS_EDAD_UMA <- CONTEO_UMA_edad %>%
+pivot_wider(names_from = `DETERMINACION`, values_from = n)
+# Crear gráfico de barras apiladas con highcharter
+highchart() %>%
+hc_chart(type = "column") %>%
+hc_colors(unname(colores))%>%
+hc_xAxis(categories = DATOS_EDAD_UMA$GRUPO_EDAD2, title = list(text = "Rango etario")) %>%
+hc_yAxis(title = list(text = "Determinación")) %>%
+hc_plotOptions(column = list(stacking = "normal")) %>%
+hc_add_series(name = "Influenza A", data = DATOS_EDAD_UMA$`Influenza A`)%>%
+hc_add_series            (name = "Influenza B", data = DATOS_EDAD_UMA$`Influenza B`) %>%
+hc_add_series(name = "Sars-Cov-2", data = DATOS_EDAD_UMA$`Sars-Cov-2`) %>%
+hc_add_series(name = "VSR", data = DATOS_EDAD_UMA$VSR)
+# Aquí está el paréntesis de cierre corregido
+
+```
+
+Gráfico 11. Distribución de los síntomas presentes en los casos positivos para la Unidad de monitoreo ambulatorio (UMA) notificados en la Región del Pehuén, según departamento SE `r SE_MIN_UMA` a `r SE_MAX_UMA`. Año 2024.N= `r N_testeos_positivos_UMA`
+
+```{r GarfiCo 11}
+#| echo: false
+CONTEO_UMA_sintomas<-CONTEO_UMA_sintomas%>%filter(n>0)
+ggplot(CONTEO_UMA_sintomas, aes(x = n, y = reorder(Sintoma, n))) +
+geom_bar(stat = "identity", fill = "#2b908f") +
+ labs(
+   x = "Numero de casos",
+  y = "Sintomas"
+   ) +
+theme_minimal() +
+  theme(
+panel.background = element_rect(fill = "white", color = NA),
+panel.grid.major = element_blank(),
+panel.grid.minor = element_blank(),
+axis.title.x = element_text(size = 18),              # Tamaño del título del eje X
+axis.title.y = element_text(size = 18),              # Tamaño del título del eje Y
+axis.text.x = element_text(size = 17),               # Tamaño de los valores del eje X
+axis.text.y = element_text(size = 18),               # Tamaño de los valores del eje Y
+legend.title = element_text(size = 18),              # Tamaño del título de la leyenda
+legend.text = element_text(size = 18)) + # Ajusta el tamaño de las etiquetas si es necesario) 
+  scale_y_discrete(labels = function(x) gsub("SINTOMA_", "", x)) # Remueve el prefijo "SINTOMA_"
+
+
+```
+
+Gráfico 12. Distribución de las comorbilidades presentes en los casos positivos para la Unidad de monitoreo ambulatorio (UMA) notificados en la Región del Pehuén, según departamento SE `r SE_MIN_UMA` a `r SE_MAX_UMA`. Año 2024.N= `r N_testeos_positivos_UMA`
+
+```{r GraFico 12 Comorbilidades}
+#| echo: false
+CONTEO_UMA_comorbilidades<-CONTEO_UMA_comorbilidades%>%filter(n>0)
+ggplot(CONTEO_UMA_comorbilidades, aes(x = n, y = reorder(Comorbilidades, n))) +
+geom_bar(stat = "identity", fill = "#2b908f") +
+ labs(
+   x = "Numero de casos",
+  y = "Sintomas"
+   ) +
+theme_minimal() +
+  theme(
+panel.background = element_rect(fill = "white", color = NA),
+panel.grid.major = element_blank(),
+panel.grid.minor = element_blank(),
+axis.title.x = element_text(size = 18),              # Tamaño del título del eje X
+axis.title.y = element_text(size = 18),              # Tamaño del título del eje Y
+axis.text.x = element_text(size = 17),               # Tamaño de los valores del eje X
+axis.text.y = element_text(size = 18),               # Tamaño de los valores del eje Y
+legend.title = element_text(size = 18),              # Tamaño del título de la leyenda
+legend.text = element_text(size = 18)) + # Ajusta el tamaño de las etiquetas si es necesario) 
+  scale_y_discrete(labels = function(x) gsub("COMORB_", "", x)) # Remueve el prefijo "COMORB_"
+```
+
+```         
+```
+
+## Infecciones respiratorias agudas: Vigilancia centinela-Unidad Centinela de Infección Respiratoria Aguda Grave (UC-IRAG)
+
+Tabla 4. Número de testeos realizados en la Unidad Centinela de Infección Respiratoria Aguda Grave (UC-IRAG). SE `r SE_MIN_UCI` a `r SE_MAX_UCI`. Año 2024.N= `r N_testeos_UCI`
+
+```{r tabla 4}
+#| echo: false
+library(flextable)
+library(officer)
+# Configura las opciones predeterminadas
+set_flextable_defaults(
+font.size = 10,
+padding = 6
+)
+# Crear la tabla con los datos y aplicar estilos
+tabla_estilizada <- flextable(head(tabla_UCI)) %>%
+# Aplicar un color de fondo al encabezado
+bg(part = "header", bg = "#2b908f") %>%
+# Ajustar el ancho de la primera columna
+width(j = 1, width = 2) %>% # Cambia el ancho a 2 pulgadas
+# Agregar bordes para el encabezado y el cuerpo de la tabla
+border(part = "all", border = fp_border(color = "#fde0dd", width = 1)) %>%
+# Aplicar el tema vanilla
+theme_vanilla()
+# Mostrar la tabla
+tabla_estilizada
+```
+
+Gráfico 13. Distribución temporal de casos de la Unidad Centinela de Infección Respiratoria Aguda Grave (UC-IRAG) notificados en la Región del Pehuén, según determinación. SE `r SE_MIN_UCI` a `r SE_MAX_UCI`. Año 2024.N= `r N_testeos_positivos_UCI`
+
+```{r Gráfico 13}
+#| echo: false
+# Preparar los datos para el gráfico
+DATOS_UCI <- CASOS_UCI_SE_POSITIVOS %>%
+pivot_wider(names_from = `DETERMINACION`, values_from = n)
+# Crear gráfico de barras apiladas con highcharter
+highchart() %>%
+hc_chart(type = "column") %>%
+hc_colors(unname(colores))%>%
+hc_xAxis(categories = DATOS_UCI$SEPI_CREADA, title = list(text = "SE")) %>%
+hc_yAxis(title = list(text = "Casos")) %>%
+hc_plotOptions(column = list(stacking = "normal")) %>%
+hc_add_series(name = "Influenza A", data = DATOS_UCI$`Influenza A`)%>%
+hc_add_series            (name = "Influenza B", data = DATOS_UCI$`Influenza B`) %>%
+hc_add_series(name = "Sars-Cov-2", data = DATOS_UCI$`Sars-Cov-2`) %>%
+hc_add_series(name = "VSR", data = DATOS_UCI$VSR)%>%
+hc_add_series(name ="Parainfluenza", data = DATOS_UCI$`Parainfluenza`)%>%
+hc_add_series(name ="Adenovirus", data = DATOS_UCI$`Adenovirus`)%>%
+hc_add_series(name ="Metaneumovirus", data = DATOS_UCI$`Metaneumovirus`)%>%  
+hc_add_series(name ="Enterovirus", data = DATOS_UCI$`Enterovirus`)%>%
+hc_add_series(name ="Bocavirus", data = DATOS_UCI$`Bocavirus`)%>%
+hc_add_series(name ="Rinovirus", data = DATOS_UCI$`Rinovirus`)%>%
+hc_add_series(
+    name = "Total Testeos",
+    data = CONTEO_UCI_SE_TOTAL$n,
+    color = "#d01c8b",
+    type = "line",
+    yAxis = 0,
+    marker = list(enabled = FALSE))# Agregar la serie de testeos totales como línea
+  
+
+
+
+```
+
+Gráfico 14. N° de determinanciones positivas para la Unidad Centinela de Infección Respiratoria Aguda Grave (UC-IRAG) notificados en la Región del Pehuén, según edad y determinación. SE `r SE_MIN_UCI` a `r SE_MAX_UCI`. Año 2024.N= `r N_testeos_positivos_UCI`
+
+```{r GRAFICO 14}
+#| echo: false
+# Cargar las librerías necesarias
+library(highcharter)
+library(dplyr)
+
+# Preparar los datos para el gráfico
+DATOS_EDAD_UCI <- CONTEO_UCI_edad %>%
+pivot_wider(names_from = `DETERMINACION`, values_from = n)
+# Crear gráfico de barras apiladas con highcharter
+highchart() %>%
+hc_chart(type = "column") %>%
+hc_colors(unname(colores))%>%
+hc_xAxis(categories = DATOS_EDAD_UCI$GRUPO_EDAD2, title = list(text = "Rango etario")) %>%
+hc_yAxis(title = list(text = "Determinación")) %>%
+hc_plotOptions(column = list(stacking = "normal")) %>%
+hc_add_series(name = "Influenza A", data = DATOS_EDAD_UCI$`Influenza A`)%>%
+hc_add_series            (name = "Influenza B", data = DATOS_EDAD_UCI$`Influenza B`) %>%
+hc_add_series(name = "Sars-Cov-2", data = DATOS_EDAD_UCI$`Sars-Cov-2`) %>%
+hc_add_series(name = "VSR", data = DATOS_EDAD_UCI$VSR)%>%
+hc_add_series(name ="Parainfluenza", data = DATOS_EDAD_UCI$`Parainfluenza`)%>%
+hc_add_series(name ="Adenovirus", data = DATOS_EDAD_UCI$`Adenovirus`)%>%
+hc_add_series(name ="Metaneumovirus", data = DATOS_EDAD_UCI$`Metaneumovirus`)%>%  
+hc_add_series(name ="Enterovirus", data = DATOS_EDAD_UCI$`Enterovirus`)%>%
+hc_add_series(name ="Bocavirus", data = DATOS_EDAD_UCI$`Bocavirus`)%>%
+hc_add_series(name ="Rinovirus", data = DATOS_EDAD_UCI$`Rinovirus`)
+
+```
+
+Gráfico 15. Distribución de los síntomas presentes en los casos positivos para la Unidad Centinela de Infección Respiratoria Aguda Grave (UC-IRAG) notificados en la Región del Pehuén, según departamento SE `r SE_MIN_UCI` a `r SE_MAX_UCI`. Año 2024.N= `r N_testeos_positivos_UCI`
+
+```{r GarfiCo 15}
+#| echo: false
+CONTEO_UCI_sintomas<-CONTEO_UCI_sintomas%>%filter(n>0)
+ggplot(CONTEO_UCI_sintomas, aes(x = n, y = reorder(Sintoma, n))) +
+geom_bar(stat = "identity", fill = "#2b908f") +
+ labs(
+   x = "Numero de casos",
+  y = "Sintomas"
+   ) +
+theme_minimal() +
+  theme(
+panel.background = element_rect(fill = "white", color = NA),
+panel.grid.major = element_blank(),
+panel.grid.minor = element_blank(),
+axis.title.x = element_text(size = 18),              # Tamaño del título del eje X
+axis.title.y = element_text(size = 18),              # Tamaño del título del eje Y
+axis.text.x = element_text(size = 17),               # Tamaño de los valores del eje X
+axis.text.y = element_text(size = 18),               # Tamaño de los valores del eje Y
+legend.title = element_text(size = 18),              # Tamaño del título de la leyenda
+legend.text = element_text(size = 18)) + # Ajusta el tamaño de las etiquetas si es necesario) 
+  scale_y_discrete(labels = function(x) gsub("SINTOMA_", "", x)) # Remueve el prefijo "SINTOMA_"
+
+
+```
+
+Gráfico 16. Distribución de las comorbilidades presentes en los casos positivos para la Unidad Centinela de Infección Respiratoria Aguda Grave (UC-IRAG) notificados en la Región del Pehuén, según departamento SE `r SE_MIN_UCI` a `r SE_MAX_UCI`. Año 2024.N= `r N_testeos_positivos_UCI`
+
+```{r GraFico 16 Comorbilidades}
+#| echo: false
+
+CONTEO_UCI_comorbilidades<-CONTEO_UCI_comorbilidades%>%filter(n>0)
+ggplot(CONTEO_UCI_comorbilidades, aes(x = n, y = reorder(Comorbilidades, n))) +
+geom_bar(stat = "identity", fill = "#2b908f") +
+ labs(
+   x = "Numero de casos",
+  y = "Sintomas"
+   ) +
+theme_minimal() +
+  theme(
+panel.background = element_rect(fill = "white", color = NA),
+panel.grid.major = element_blank(),
+panel.grid.minor = element_blank(),
+axis.title.x = element_text(size = 18),              # Tamaño del título del eje X
+axis.title.y = element_text(size = 18),              # Tamaño del título del eje Y
+axis.text.x = element_text(size = 17),               # Tamaño de los valores del eje X
+axis.text.y = element_text(size = 18),               # Tamaño de los valores del eje Y
+legend.title = element_text(size = 18),              # Tamaño del título de la leyenda
+legend.text = element_text(size = 18)) + # Ajusta el tamaño de las etiquetas si es necesario) 
+  scale_y_discrete(labels = function(x) gsub("COMORB_", "", x)) # Remueve el prefijo "COMORB_"
+```
+
+Tabla 5. Dias de internación según tipo de requerimiento de cuidado y determinación en casos positivos para la Unidad Centinela de Infección Respiratoria Aguda Grave (UC-IRAG) notificados en la Región del Pehuén. SE `r SE_MIN_UCI` a `r SE_MAX_UCI`. Año 2024.N= `r N_testeos_positivos_UCI`
+
+```{r tabla 5}
+#| echo: false
+library(flextable)
+library(officer)
+
+# Establecer los valores predeterminados para flextable
+set_flextable_defaults(
+  font.size = 10,
+  padding = 6
+)
+
+# Crear la tabla completa con estilos
+tabla_estilizada <- flextable(Tabla_dias_internacion_determinacion) %>%
+  # Aplicar un color de fondo al encabezado
+  bg(part = "header", bg = "#2b908f") %>%
+  # Ajustar el ancho de la primera columna
+  width(j = 1, width = 2) %>% # Cambia el ancho a 2 pulgadas
+  # Agregar bordes para el encabezado y el cuerpo de la tabla
+  border(part = "all", border = fp_border(color = "#fde0dd", width = 1)) %>%
+  bg(i = ~ `Tipo de determinación` == "Totales", bg = "#fde0dd") %>% # Fondo distinto para totales
+  bold(i = ~ `Tipo de determinación` == "Totales", bold = TRUE)%>%
+  # Aplicar el tema vanilla
+  theme_vanilla()
+
+# Mostrar la tabla
+tabla_estilizada
+
+```
+
+Tabla 6. N° de hisopados realizados en la Unidad Centinela de Infección Respiratoria Aguda Grave (UC-IRAG) según servicio. SE `r SE_MIN_UCI` a `r SE_MAX_UCI`. Año 2024.N= `r N_testeos_positivos_UCI`
+
+```{r tabla 6}
+#| echo: false
+# Establecer los valores predeterminados para flextable
+set_flextable_defaults(
+  font.size = 10,
+  padding = 6
+)
+
+# Crear la tabla completa con estilos
+tabla_estilizada <- flextable(Tabla_servicios) %>%
+  # Aplicar un color de fondo al encabezado
+  bg(part = "header", bg = "#2b908f") %>%
+  # Ajustar el ancho de la primera columna
+  width(j = 1, width = 2) %>% # Cambia el ancho a 2 pulgadas
+  # Agregar bordes para el encabezado y el cuerpo de la tabla
+  border(part = "all", border = fp_border(color = "#fde0dd", width = 1)) %>%
+  bg(i = ~ `Servicio` == "Totales", bg = "#fde0dd") %>% # Fondo distinto para totales
+  bold(i = ~ `Servicio` == "Totales", bold = TRUE)%>%
+  # Aplicar el tema vanilla
+  theme_vanilla()
+
+# Mostrar la tabla
+tabla_estilizada
+
+```

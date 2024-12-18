@@ -1,0 +1,55 @@
+---
+title: "Export_HTML_1 "
+author: "Dirección de epidemiología"
+date: today
+format: 
+  html:
+    embed-resources: true
+    published-title: "Fecha:"  # Cambia "Published" por "Fecha"
+    author-title: "Autor:"
+    toc: true                # Habilita la tabla de contenidos
+    toc-title: "Índice de Contenidos"  # Título del índice
+    toc-depth: 3             # Nivel de profundidad del índice (hasta h3)
+    toc-location: left       # Ubicación del índice (izquierda)
+    #include-before-body: logo.html # Incluye el logo antes del contenido
+editor: visual
+execute:
+  warning: false
+  message: false
+footnotes-hover: true # muestra notas al pie
+smooth-scroll: true # suaviza el scroll
+code-copy: true            # Permite copiar el código desde el documento
+include-in-header: header4.html
+css: CSS/style.css
+resources:
+  - boletin.pdf
+---
+
+# **YAML**
+
+**YAML (YAML Ain't Markup Language)** es un formato de texto simple y legible que se usa para **estructurar datos en archivos de configuración**. En el contexto de documentos Quarto o R Markdown, el encabezado YAML se utiliza para definir metadatos y configuraciones, como el título, autor, formato de salida (PDF, HTML, etc.), y opciones específicas para personalizar el documento.
+
+[Temas para exportar en Quarto](https://quarto.org/docs/output-formats/html-themes.html)
+
+[Descargar PDF](Boletín.pdf)
+
+## Quarto
+
+Quarto enables you to weave together content and executable code into a finished document. To learn more about Quarto see <https://quarto.org>.
+
+## Running Code
+
+When you click the **Render** button a document will be generated that includes both content and the output of embedded code. You can embed code like this:
+
+```{r}
+1 + 1
+```
+
+You can add options to executable code like this
+
+```{r}
+#| echo: false
+2 * 2
+```
+
+The `echo: false` option disables the printing of code (only output is displayed).
